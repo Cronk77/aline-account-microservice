@@ -1,0 +1,8 @@
+com/aline/accountmicroservice/AccountMicroserviceApplication.class
+com/aline/accountmicroservice/authorization/AccountAuthorizationService.class
+com/aline/accountmicroservice/controller/RootController.class
+com/aline/accountmicroservice/controller/MemberController.class
+com/aline/accountmicroservice/config/WebSecurityConfig.class
+com/aline/accountmicroservice/config/AccountMicroserviceConfig.class
+com/aline/accountmicroservice/service/AccountService.class
+com/aline/accountmicroservice/controller/AccountController.class

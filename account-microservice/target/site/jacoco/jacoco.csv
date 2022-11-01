@@ -1,0 +1,9 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Account Microservice,com.aline.accountmicroservice.authorization,AccountAuthorizationService,43,3,6,0,10,1,5,1,2,1
+Account Microservice,com.aline.accountmicroservice.service,AccountService,17,48,3,1,2,9,3,5,1,5
+Account Microservice,com.aline.accountmicroservice.controller,MemberController,5,19,1,1,0,4,1,2,0,2
+Account Microservice,com.aline.accountmicroservice.controller,RootController,0,4,0,0,0,2,0,2,0,2
+Account Microservice,com.aline.accountmicroservice.controller,AccountController,10,16,0,0,2,3,1,2,1,2
+Account Microservice,com.aline.accountmicroservice.config,AccountMicroserviceConfig,0,7,0,0,0,2,0,2,0,2
+Account Microservice,com.aline.accountmicroservice.config,WebSecurityConfig,0,4,0,0,0,2,0,2,0,2
+Account Microservice,com.aline.accountmicroservice,AccountMicroserviceApplication,5,3,0,0,2,1,1,1,1,1
