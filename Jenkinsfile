@@ -19,7 +19,7 @@ pipeline{
         }
         stage("Test"){
             steps{
-                sh script: "mvn clean test"
+                sh "mvn clean test -X"
             }
             post{
                 success{
@@ -32,7 +32,7 @@ pipeline{
         }
         stage("Build"){
             steps{
-                sh script: "mvn -Dmaven.test.failure.ignore=true clean package"
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
             post{
                 success{
