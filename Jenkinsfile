@@ -1,11 +1,11 @@
 pipeline{
     agent any
-    tools{
-        maven 'Maven'
-    }
-    //environment{
-        //PATH = "Files/Maven/apache-maven-3.8.6/bin/:$PATH"
+    //tools{
+       // maven 'Maven'
     //}
+    environment{
+        PATH = "Files/Maven/apache-maven-3.8.6/bin/:$PATH"
+    }
     stages{
         stage("Checkout"){
             steps{

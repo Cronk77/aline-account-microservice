@@ -1,8 +1,8 @@
-/home/colton_c/aline-financial/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/config/WebSecurityConfig.java
-/home/colton_c/aline-financial/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/service/AccountService.java
-/home/colton_c/aline-financial/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/config/AccountMicroserviceConfig.java
-/home/colton_c/aline-financial/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/controller/AccountController.java
-/home/colton_c/aline-financial/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/AccountMicroserviceApplication.java
-/home/colton_c/aline-financial/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/authorization/AccountAuthorizationService.java
-/home/colton_c/aline-financial/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/controller/MemberController.java
-/home/colton_c/aline-financial/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/controller/RootController.java
+/home/colton_c/aline/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/authorization/AccountAuthorizationService.java
+/home/colton_c/aline/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/service/AccountService.java
+/home/colton_c/aline/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/controller/AccountController.java
+/home/colton_c/aline/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/config/WebSecurityConfig.java
+/home/colton_c/aline/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/AccountMicroserviceApplication.java
+/home/colton_c/aline/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/controller/RootController.java
+/home/colton_c/aline/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/controller/MemberController.java
+/home/colton_c/aline/aline-account-microservice/account-microservice/src/main/java/com/aline/accountmicroservice/config/AccountMicroserviceConfig.java
