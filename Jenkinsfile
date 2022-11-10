@@ -1,13 +1,10 @@
 pipeline{
     agent any
-    //tools{
-       // maven 'Maven'
-    //}
-    environment{
-        PATH = "Files/Maven/apache-maven-3.8.6/bin/:$PATH"
+    tools{
+        maven "Maven"
     }
     stages{
-        stage("Checkout"){
+        stage('Checkout'){
             steps{
                 checkout scm
             }
@@ -35,7 +32,7 @@ pipeline{
         }
         stage("Build"){
             steps{
-                sh 'mvn -Dmaven.test.failure.ignore=true clean package'
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
             post{
                 success{
