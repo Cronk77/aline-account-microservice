@@ -17,19 +17,19 @@ pipeline{
                 }
             }
         }
-        //stage("Test"){
-        //    steps{
-        //        sh "mvn clean test -X"
-        //    }
-        //    post{
-        //        success{
-        //            echo 'Test Stage success'
-        //        }
-        //        failure{
-        //            echo 'Test Stage failed'
-        //        }
-        //    }
-        //}
+        stage("Test"){
+            steps{
+                sh "mvn clean test"
+            }
+            post{
+                success{
+                    echo 'Test Stage success'
+                }
+                failure{
+                    echo 'Test Stage failed'
+                }
+            }
+        }
         stage("Build"){
             steps{
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
