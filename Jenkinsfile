@@ -17,16 +17,23 @@ pipeline{
                 }
             }
         }
-        stage("Test"){
+        //stage("Test"){
+        //    steps{
+        //        sh "mvn clean test"
+        //    }
+        //    post{
+        //        success{
+        //            echo 'Test Stage success'
+        //        }
+        //        failure{
+        //            echo 'Test Stage failed'
+        //        }
+        //    }
+        //}
+         stage('SonarQube Analysis') {
             steps{
-                sh "mvn clean test"
-            }
-            post{
-                success{
-                    echo 'Test Stage success'
-                }
-                failure{
-                    echo 'Test Stage failed'
+                withSonarQubeEnv('aline-sonarqube-server') {
+                    sh "mvn clean sonar:sonar"
                 }
             }
         }
