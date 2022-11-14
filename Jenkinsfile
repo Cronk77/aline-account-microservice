@@ -20,8 +20,8 @@ pipeline{
         // Issue with Code base Failing 'mvn test' and then ignores all other steps
         stage("Test"){
             steps{
-                //sh "mvn clean test"
-                echo 'mvn clean test fails on account in codebase'
+                sh "mvn clean test"
+                
             }
             post{
                 success{
@@ -36,7 +36,7 @@ pipeline{
             steps{
                 withSonarQubeEnv('aline-sonarqube-server') {
                     //sh "mvn clean sonar:sonar -Dsonar.projectKey=account-sonarqube-project"
-                    sh "mvn clean sonar:sonar"
+                    sh "mvn clean verify sonar:sonar   -Dsonar.projectKey=account-sonarqube-project   -Dsonar.host.url=http://172.29.194.82:9000   -Dsonar.login=sqa_b6086ca7d92d27e99ad225fb2c6a0da22cc868c5"
                 }
             }
         }
