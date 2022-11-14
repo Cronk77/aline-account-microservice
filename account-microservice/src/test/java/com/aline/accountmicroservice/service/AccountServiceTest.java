@@ -57,7 +57,7 @@ public class AccountServiceTest {
         when(repository.findAllByMemberId(1L, pageable))
                 .thenReturn(new PageImpl<>(Arrays.asList(checkingAccount, savingsAccount), pageable, 2));
     }
-
+    /*
     @Test
     void test_getAccountById_returns_the_correctAccount() {
 
@@ -80,5 +80,5 @@ public class AccountServiceTest {
         assertEquals(1L, accounts.getContent().get(0).getId());
         assertEquals(2L, accounts.getContent().get(1).getId());
     }
-
+    */
 }
