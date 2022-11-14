@@ -17,6 +17,7 @@ pipeline{
                 }
             }
         }
+        // Issue with Code base Failing 'mvn test'
         //stage("Test"){
         //    steps{
         //        sh "mvn clean test"
@@ -33,7 +34,7 @@ pipeline{
          stage('SonarQube Analysis') {
             steps{
                 withSonarQubeEnv('aline-sonarqube-server') {
-                    sh "mvn clean sonar:sonar"
+                    sh "mvn clean sonar:sonar -Dsonar.projectKey=account-sonarqube-project"
                 }
             }
         }
