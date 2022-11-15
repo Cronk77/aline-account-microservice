@@ -1,5 +1,5 @@
 pipeline{
-    agent any
+    agent any    
     tools{
         maven "Maven"
     }
@@ -9,7 +9,6 @@ pipeline{
                 checkout scm
             }
         }
-        // Issue with Code base Failing 'mvn test' and then ignores all other steps
         stage("Test"){
             steps{
                 sh "mvn clean test"  
@@ -32,11 +31,8 @@ pipeline{
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
             post{
-                success{
-                    echo 'Build Stage success'
-                }
-                failure{
-                    echo 'Build Stage failed'
+                always{
+                    archiveArtifacts artifacts: 'account-microservice/target/*.jar', onlyIfSuccessful: true
                 }
             }
         }
