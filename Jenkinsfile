@@ -30,11 +30,11 @@ pipeline{
             steps{
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
-            post{
-                always{
-                    archiveArtifacts artifacts: 'account-microservice/target/*.jar', onlyIfSuccessful: true
-                }
-            }
+        }
+    }
+    post{
+        always{
+            archiveArtifacts artifacts: 'account-microservice/target/*.jar', onlyIfSuccessful: true
         }
     }
 }
