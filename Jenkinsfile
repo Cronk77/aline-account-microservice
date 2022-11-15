@@ -2,7 +2,6 @@ pipeline{
     agent any
     tools{
         maven "Maven"
-        sonarQube 'SonarqubeScanner'
     }
     stages{
         stage('Checkout'){
@@ -36,7 +35,7 @@ pipeline{
          stage('SonarQube Analysis') {
             steps{
                 withSonarQubeEnv('aline-sonarqube-server') {
-                    sh "mvn clean sonar:sonar -Dsonar.projectKey=account-sonarqube-project"
+                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=account-sonarqube-project"
                     //sh "mvn clean verify sonar:sonar   -Dsonar.projectKey=account-sonarqube-project   -Dsonar.host.url=http://172.19.154.182:9000   -Dsonar.login=sqa_b6086ca7d92d27e99ad225fb2c6a0da22cc868c5"
                 }
             }
