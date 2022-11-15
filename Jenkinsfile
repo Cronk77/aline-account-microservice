@@ -8,36 +8,23 @@ pipeline{
             steps{
                 checkout scm
             }
-            post{
-                success{
-                    echo 'Checkout Stage success'
-                }
-                failure{
-                    echo 'Checkout Stage failed'
-                }
-            }
         }
         // Issue with Code base Failing 'mvn test' and then ignores all other steps
         stage("Test"){
             steps{
-                sh "mvn clean test"
-                
-            }
-            post{
-                success{
-                    echo 'Test Stage success'
-                }
-                failure{
-                    echo 'Test Stage failed'
-                }
+                sh "mvn clean test"  
             }
         }
          stage('SonarQube Analysis') {
             steps{
                 withSonarQubeEnv('aline-sonarqube-server') {
                     sh "mvn clean verify sonar:sonar -Dsonar.projectKey=account-sonarqube-project"
-                    //sh "mvn clean verify sonar:sonar   -Dsonar.projectKey=account-sonarqube-project   -Dsonar.host.url=http://172.19.154.182:9000   -Dsonar.login=sqa_b6086ca7d92d27e99ad225fb2c6a0da22cc868c5"
                 }
+            }
+        }
+        stage('Quality Gate'){
+            steps{
+                waitForQualityGate abortPipeline: true
             }
         }
         stage("Build"){
