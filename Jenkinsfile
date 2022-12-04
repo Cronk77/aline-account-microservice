@@ -1,21 +1,28 @@
 pipeline{
     environment{
         //variables are set as credentials to maintain security and parameterization
-        ENCRYPT_SECRET_KEY = credentials('ENCRYPT_SECRET_KEY')
-        JWT_SECRET_KEY = credentials('JWT_SECRET_KEY')
-        DB_USERNAME = credentials('DB_USERNAME')
-        DB_PASSWORD = credentials('DB_PASSWORD')
-        DB_HOST = credentials('DB_HOST')
-        DB_PORT = credentials('DB_PORT')
-        DB_NAME = credentials('DB_NAME')
+        // ENCRYPT_SECRET_KEY = credentials('ENCRYPT_SECRET_KEY')
+        // JWT_SECRET_KEY = credentials('JWT_SECRET_KEY')
+        // DB_USERNAME = credentials('DB_USERNAME')
+        // DB_PASSWORD = credentials('DB_PASSWORD')
+        // DB_HOST = credentials('DB_HOST')
+        // DB_PORT = credentials('DB_PORT')
+        // DB_NAME = credentials('DB_NAME')
+        ENCRYPT_SECRET_KEY="12345678901234567890123456789012"
+        JWT_SECRET_KEY="12345678901234567890123456789012"
+        DB_USERNAME="admin"
+        DB_PASSWORD="password123"
+        DB_HOST="aline-db.clxfaquthjyh.us-east-1.rds.amazonaws.com"
+        DB_PORT="3306"
+        DB_NAME="aline"
         APP_PORT = 80
         IMAGE_TAG = "0.1." + "${env.BUILD_ID}"
     }
     agent any    
     tools{
         maven "M3"
-        //dockerTool "docker"
-        'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker-20.10.12'
+        dockerTool "docker"
+        //'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker-20.10.12'
     }
     stages{
         stage('Checkout'){
