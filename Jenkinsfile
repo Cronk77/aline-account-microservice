@@ -9,7 +9,7 @@ pipeline{
         DB_PORT = credentials('DB_PORT')
         DB_NAME = credentials('DB_NAME')
         APP_PORT = 80
-        IMAGE_TAG = "0.1." + ${env.BUILD_ID}
+        IMAGE_TAG = "0.1." + "${env.BUILD_ID}"
     }
     agent any    
     tools{
