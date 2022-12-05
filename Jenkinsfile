@@ -46,6 +46,13 @@ pipeline{
         //         waitForQualityGate abortPipeline: true
         //     }
         // }
+        stage('Clean Images'){
+			steps{
+				sh 'docker rmi -f $(docker images --filter reference="cc-account*" -q)'
+				sh 'docker rmi -f $(docker images -q -f dangling=true)'
+			}
+		}
+
         stage("Build"){
             steps{
                 script{
