@@ -50,10 +50,9 @@ pipeline{
 			steps{
                 //ensures build doesn't fail if there isnt any previous images to delete
                 //h 'docker images | grep "cc-account-microservice" | xargs docker rmi'
-				sh 'docker rmi --force $(docker images --filter reference="${IMAGE_NAME}" -q)'
-				sh 'docker rmi --force $(docker images -q -f dangling=true)'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh "exit 1"
+                    sh 'docker rmi --force $(docker images --filter reference="${IMAGE_NAME}" -q)'
+				    sh 'docker rmi --force $(docker images -q -f dangling=true)'
                 }
 			}
 		}
