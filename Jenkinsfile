@@ -1,4 +1,5 @@
 pipeline{
+    def image
     environment{
         //variables are set as secret text credentials to maintain security and parameterization
         ENCRYPT_SECRET_KEY = credentials('ENCRYPT_SECRET_KEY')
@@ -58,13 +59,6 @@ pipeline{
                 }
             }
         }
-        // stage("Logging into AWS ECR") {
-        //     steps {
-        //         script {
-        //             sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-        //         }
-        //     }
-        // }
         stage("Deploy") {
             steps{
                 script {
@@ -72,7 +66,7 @@ pipeline{
                         "https://${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com",
                         "ecr:${AWS_REGION}:${AWS_JENKINS_CRED}"
                     ){
-                        image.push('${IMAGE_TAG}')
+                        image.push("${IMAGE_TAG}")
                         image.push('latest')
                     }
                 }
