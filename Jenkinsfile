@@ -17,7 +17,7 @@ pipeline{
         AWS_REGION = credentials('AWS_REGION')
         AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
         AWS_JENKINS_CRED = "cc-aws-cred"
-        //SONARQUBE_PROJECT = "cc-account-microservice-project"
+        SONARQUBE_PROJECT = "cc-account-microservice-project"
     }
     agent any    
     tools{
@@ -39,7 +39,7 @@ pipeline{
         stage('SonarQube Analysis') {
             steps{
                 withSonarQubeEnv('SQ') {
-                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=cc-qualityGate"
+                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=${SONARQUBE_PROJECT}"
                 }
             }
         }
