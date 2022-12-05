@@ -9,7 +9,7 @@ pipeline{
         DB_PORT = credentials('DB_PORT')
         DB_NAME = credentials('DB_NAME')
         APP_PORT = 80
-        IMAGE_NAME = "cc-account-microservice"
+        IMAGE_NAME = "cc-account-microservice" //uses same name as ecr repo
         IMAGE_TAG = "0.1." + "${env.BUILD_ID}"
         AWS_REGION = "us-west-2"
         AWS_ACCOUNT_ID = "412032026508"
@@ -60,7 +60,7 @@ pipeline{
         stage("Logging into AWS ECR") {
             steps {
                 script {
-                    sh "aws ecr get-login-password — region ${AWS_REGION} | docker login — username AWS — password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
                 }
             }
         }
@@ -69,7 +69,8 @@ pipeline{
             steps{
                 script {
                     sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}"
-                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:latest"
                 }
             }
         }
