@@ -1,4 +1,5 @@
 def image
+
 pipeline{
     environment{
         //variables are set as secret text credentials to maintain security and parameterization
@@ -37,7 +38,7 @@ pipeline{
         stage('SonarQube Analysis') {
             steps{
                 withSonarQubeEnv('SQ') {
-                    sh "mvn clean verify sonar:sonar"
+                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=aline"
                 }
             }
         }
