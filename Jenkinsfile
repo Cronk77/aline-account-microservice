@@ -51,7 +51,7 @@ pipeline{
         stage("Build"){
             steps{
                 script{
-                    image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}", \
+                    image = docker.build("${IMAGE_NAME}:${IMAGE_TAG} ", \
                     "--build-arg APP_PORT=${APP_PORT} ",\
                     "--build-arg ENCRYPT_SECRET_KEY=${ENCRYPT_SECRET_KEY} ",\
                     "--build-arg JWT_SECRET_KEY=${JWT_SECRET_KEY} ",\
