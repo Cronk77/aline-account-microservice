@@ -17,6 +17,7 @@ pipeline{
         AWS_REGION = credentials('AWS_REGION')
         AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
         AWS_JENKINS_CRED = "cc-aws-cred"
+        SONARQUBE_PROJECT = "cc-account-microservice-project"
     }
     agent any    
     tools{
@@ -35,31 +36,31 @@ pipeline{
                 sh "mvn clean test"  
             }
         }
-        stage('SonarQube Analysis') {
-            steps{
-                withSonarQubeEnv('SQ') {
-                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=aline"
-                }
-            }
-        }
-        stage('Quality Gate'){
-            steps{
-                waitForQualityGate abortPipeline: true
-            }
-        }
-        stage('Remove old Image'){//to ensure the agent doesnt run out of space
-			steps{
-                //ensures build doesn't fail if there isnt any previous images to delete
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'docker rmi --force $(docker images --filter reference="${IMAGE_NAME}" -q)'
-				    sh 'docker rmi --force $(docker images -q -f dangling=true)'
-                }
-			}
-		}
+        // stage('SonarQube Analysis') {
+        //     steps{
+        //         withSonarQubeEnv('SQ') {
+        //             sh "mvn clean verify sonar:sonar -Dsonar.projectKey=${SONARQUBE_PROJECT}"
+        //         }
+        //     }
+        // }
+        // stage('Quality Gate'){
+        //     steps{
+        //         waitForQualityGate abortPipeline: true
+        //     }
+        // }
         stage("Build"){
             steps{
                 script{
-                    image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}", "--build-arg APP_PORT=${APP_PORT} --build-arg ENCRYPT_SECRET_KEY=${ENCRYPT_SECRET_KEY} --build-arg JWT_SECRET_KEY=${JWT_SECRET_KEY} --build-arg DB_USERNAME=${DB_USERNAME} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg DB_HOST=${DB_HOST} --build-arg DB_PORT=${DB_PORT} --build-arg DB_NAME=${DB_NAME} .")
+                    image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}", \
+                    "--build-arg APP_PORT=${APP_PORT} ",\
+                    "--build-arg ENCRYPT_SECRET_KEY=${ENCRYPT_SECRET_KEY} ",\
+                    "--build-arg JWT_SECRET_KEY=${JWT_SECRET_KEY} ",\
+                    "--build-arg DB_USERNAME=${DB_USERNAME} ",\
+                    "--build-arg DB_PASSWORD=${DB_PASSWORD} ",\
+                    "--build-arg DB_HOST=${DB_HOST} ",\
+                    "--build-arg DB_PORT=${DB_PORT} ",\
+                    "--build-arg DB_NAME=${DB_NAME} ",\
+                    ".")
                 }
             }
         }
@@ -75,5 +76,14 @@ pipeline{
                 }
             }
         }
+        stage('Remove old Image(s)'){//to ensure the agent doesnt run out of space
+			steps{
+                //ensures build doesn't fail if there isnt any previous images to delete
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    //sh 'docker rmi --force $(docker images --filter reference="${IMAGE_NAME}" -q)'
+				    sh 'docker rmi --force $(docker images -q -f dangling=true)'
+                }
+			}
+		}
     }
 }
