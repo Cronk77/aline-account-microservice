@@ -44,7 +44,13 @@ pipeline{
         //         waitForQualityGate abortPipeline: true
         //     }
         // }
-
+        stage('Remove old Image'){//to ensure the agent doesnt run out of space
+			steps{
+                //h 'docker images | grep "cc-account-microservice" | xargs docker rmi'
+				sh 'docker rmi --force $(docker images --filter reference="cc-account*" -q)'
+				sh 'docker rmi --force $(docker images -q -f dangling=true)'
+			}
+		}
         stage("Build"){
             steps{
                 script{
@@ -72,12 +78,5 @@ pipeline{
                 }
             }
         }
-        stage('Remove old Image'){//to ensure the agent doesnt run out of space
-			steps{
-                //h 'docker images | grep "cc-account-microservice" | xargs docker rmi'
-				sh 'docker rmi --force $(docker images --filter reference="cc-account*" -q)'
-				sh 'docker rmi --force $(docker images -q -f dangling=true)'
-			}
-		}
     }
 }
