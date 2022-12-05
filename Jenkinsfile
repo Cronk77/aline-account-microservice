@@ -2,6 +2,7 @@ def image
 pipeline{
     environment{
         //variables are set as secret text credentials to maintain security and parameterization
+        //ensures logs also don't shows secret values
         ENCRYPT_SECRET_KEY = credentials('ENCRYPT_SECRET_KEY')
         JWT_SECRET_KEY = credentials('JWT_SECRET_KEY')
         DB_USERNAME = credentials('DB_USERNAME')
@@ -12,9 +13,8 @@ pipeline{
         APP_PORT = 80
         IMAGE_NAME = "cc-account-microservice" //acts as ecr repo name also
         IMAGE_TAG = "0.1." + "${env.BUILD_ID}"
-        AWS_REGION = "us-west-2"
+        AWS_REGION = credentials('AWS_REGION')
         AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
-        //AWS_ACCOUNT_ID = "412032026508"
         AWS_JENKINS_CRED = "cc-aws-cred"
     }
     agent any    
@@ -34,22 +34,21 @@ pipeline{
                 sh "mvn clean test"  
             }
         }
-        // stage('SonarQube Analysis') {
-        //     steps{
-        //         withSonarQubeEnv('aline-sonarqube-server') {
-        //             sh "mvn clean verify sonar:sonar -Dsonar.projectKey=account-sonarqube-project"
-        //         }
-        //     }
-        // }
-        // stage('Quality Gate'){
-        //     steps{
-        //         waitForQualityGate abortPipeline: true
-        //     }
-        // }
+        stage('SonarQube Analysis') {
+            steps{
+                withSonarQubeEnv('SQ') {
+                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=cc-account-project"
+                }
+            }
+        }
+        stage('Quality Gate'){
+            steps{
+                waitForQualityGate abortPipeline: true
+            }
+        }
         stage('Remove old Image'){//to ensure the agent doesnt run out of space
 			steps{
                 //ensures build doesn't fail if there isnt any previous images to delete
-                //h 'docker images | grep "cc-account-microservice" | xargs docker rmi'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh 'docker rmi --force $(docker images --filter reference="${IMAGE_NAME}" -q)'
 				    sh 'docker rmi --force $(docker images -q -f dangling=true)'
