@@ -8,7 +8,7 @@ pipeline{
         // DB_HOST = credentials('DB_HOST')
         // DB_PORT = credentials('DB_PORT')
         // DB_NAME = credentials('DB_NAME')
-        ENCRYPT_SECRET_KEY="12345678901234567890123456789012"
+        ENCRYPT_SECRET_KEY="1"
         JWT_SECRET_KEY="12345678901234567890123456789012"
         DB_USERNAME="admin"
         DB_PASSWORD="password123"
