@@ -46,7 +46,7 @@ pipeline{
         // }
         stage('Remove old Images'){
 			steps{
-                sh 'docker rmi --force $(docker images -q "cc-account-microservice"'
+                sh 'docker images | grep "cc-account-microservice" | xargs docker rmi'
 				//sh 'docker rmi --force $(docker images --filter reference="cc-account*" -q)'
 				//sh 'docker rmi --force $(docker images -q -f dangling=true)'
 			}
