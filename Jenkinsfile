@@ -9,11 +9,12 @@ pipeline{
         DB_PORT = credentials('DB_PORT')
         DB_NAME = credentials('DB_NAME')
         APP_PORT = 80
-        IMAGE_NAME = "cc-account-microservice" //uses same name as ecr repo
+        IMAGE_NAME = "cc-account-microservice" //acts as ecr repo name also
         IMAGE_TAG = "0.1." + "${env.BUILD_ID}"
         AWS_REGION = "us-west-2"
         AWS_ACCOUNT_ID = "412032026508"
-        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}"
+        AWS_JENKINS_CRED = "cc-aws-cred"
+
     }
     agent any    
     tools{
@@ -43,10 +44,11 @@ pipeline{
         //         waitForQualityGate abortPipeline: true
         //     }
         // }
-        stage('Clean Images'){
+        stage('Remove old Images'){
 			steps{
-				sh 'docker rmi -f $(docker images --filter reference="cc-account*" -q)'
-				sh 'docker rmi -f $(docker images -q -f dangling=true)'
+                sh 'docker rmi --force $(docker images -q "cc-account*"'
+				//sh 'docker rmi --force $(docker images --filter reference="cc-account*" -q)'
+				//sh 'docker rmi --force $(docker images -q -f dangling=true)'
 			}
 		}
 
@@ -57,20 +59,24 @@ pipeline{
                 }
             }
         }
-        stage("Logging into AWS ECR") {
-            steps {
-                script {
-                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-                }
-            }
-        }
+        // stage("Logging into AWS ECR") {
+        //     steps {
+        //         script {
+        //             sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+        //         }
+        //     }
+        // }
 
-        stage("Pushing to ECR") {
+        stage("Deploy") {
             steps{
                 script {
-                    sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}"
-                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:latest"
+                    docker.withRegistry(
+                        "https://${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com",
+                        "ecr:${AWS_REGION}:${AWS_JENKINS_CRED}"
+                    ){
+                        image.push('${IMAGE_TAG}')
+                        image.push('latest')
+                    }
                 }
             }
         }
