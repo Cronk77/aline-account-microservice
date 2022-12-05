@@ -37,7 +37,7 @@ pipeline{
         stage('SonarQube Analysis') {
             steps{
                 withSonarQubeEnv('SQ') {
-                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=cc-account-project"
+                    sh "mvn clean verify sonar:sonar"
                 }
             }
         }
