@@ -1,13 +1,13 @@
 pipeline{
     environment{
         //variables are set as credentials to maintain security and parameterization
-        ENCRYPT_SECRET_KEY = withCredentials('ENCRYPT_SECRET_KEY')
-        JWT_SECRET_KEY = withCredentials('JWT_SECRET_KEY')
-        DB_USERNAME = withCredentials('DB_USERNAME')
-        DB_PASSWORD = withCredentials('DB_PASSWORD')
-        DB_HOST = withCredentials('DB_HOST')
-        DB_PORT = withCredentials('DB_PORT')
-        DB_NAME = withCredentials('DB_NAME')
+        ENCRYPT_SECRET_KEY = credentials('ENCRYPT_SECRET_KEY')
+        JWT_SECRET_KEY = credentials('JWT_SECRET_KEY')
+        DB_USERNAME = credentials('DB_USERNAME')
+        DB_PASSWORD = credentials('DB_PASSWORD')
+        DB_HOST = credentials('DB_HOST')
+        DB_PORT = credentials('DB_PORT')
+        DB_NAME = credentials('DB_NAME')
         // ENCRYPT_SECRET_KEY="12345678901234567890123456789012"
         // JWT_SECRET_KEY="12345678901234567890123456789012"
         // DB_USERNAME="admin"
@@ -49,7 +49,8 @@ pipeline{
         stage("Build"){
             steps{
                 script{
-                    image = docker.build("cc-account-microservice:${IMAGE_TAG}", "--build-arg APP_PORT=${APP_PORT} --build-arg ENCRYPT_SECRET_KEY=${ENCRYPT_SECRET_KEY} --build-arg JWT_SECRET_KEY=${JWT_SECRET_KEY} --build-arg DB_USERNAME=${DB_USERNAME} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg DB_HOST=${DB_HOST} --build-arg DB_PORT=${DB_PORT} --build-arg DB_NAME=${DB_NAME} .")
+                    //image = docker.build("cc-account-microservice:${IMAGE_TAG}", "--build-arg APP_PORT=${APP_PORT} --build-arg ENCRYPT_SECRET_KEY=${ENCRYPT_SECRET_KEY} --build-arg JWT_SECRET_KEY=${JWT_SECRET_KEY} --build-arg DB_USERNAME=${DB_USERNAME} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg DB_HOST=${DB_HOST} --build-arg DB_PORT=${DB_PORT} --build-arg DB_NAME=${DB_NAME} .")
+                    sh "echo ENCRYPT_SECRET_KEY"
                 }
             }
         }
