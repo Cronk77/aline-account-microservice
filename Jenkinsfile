@@ -67,6 +67,7 @@ pipeline{
                         sh ('kubectl apply -f  account-deployment-service.yaml')
                     }
                 }
+            }
         }
         stage('Remove old Image(s)'){//to ensure the agent doesnt run out of space by deleting image builds
 			steps{
