@@ -42,6 +42,45 @@ pipeline{
         //         waitForQualityGate abortPipeline: true
         //     }
         // }
+        // stage('Remove old Image(s)'){//to ensure the agent doesnt run out of space by deleting image builds
+		// 	steps{
+        //         //ensures build doesn't fail if there isnt any previous images to delete
+        //         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+        //             sh 'docker rmi -f $(docker images --filter reference="cc-account-microservice*" -q)'
+		// 		       sh 'docker rmi --force $(docker images -q -f dangling=true)'
+        //         }
+		// 	}
+		// }
+        stage("Build"){
+            steps{
+                script{
+                    image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}", "--build-arg APP_PORT=${APP_PORT} .")
+                }
+            }
+        }
+        stage("Push Image"){
+            steps{
+                script{
+                    docker.withRegistry(
+                        "https://${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com",
+                        "ecr:${AWS_REGION}:${AWS_JENKINS_CRED}"){
+                        image.push("${IMAGE_TAG}")
+                        image.push('latest')
+                    }
+                }
+            }
+        }
+        stage("Deploy"){
+            steps{
+                script{
+                    withKubeConfig([credentialsId: 'cc-kubeconfig',
+                    serverUrl: 'https://212BB41E5C1BB0D8D6E9FF54CC7D5626.gr7.us-west-2.eks.amazonaws.com']) {
+                        sh 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 412032026508.dkr.ecr.us-west-2.amazonaws.com'
+                        sh 'kubectl apply -f  account-deployment-service.yaml'
+                    }
+                }
+            }
+        }
         stage('Remove old Image(s)'){//to ensure the agent doesnt run out of space by deleting image builds
 			steps{
                 //ensures build doesn't fail if there isnt any previous images to delete
@@ -51,43 +90,5 @@ pipeline{
                 }
 			}
 		}
-        // stage("Build"){
-        //     steps{
-        //         script{
-        //             image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}", "--build-arg APP_PORT=${APP_PORT} .")
-        //         }
-        //     }
-        // }
-        // stage("Push Image"){
-        //     steps{
-        //         script{
-        //             docker.withRegistry(
-        //                 "https://${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com",
-        //                 "ecr:${AWS_REGION}:${AWS_JENKINS_CRED}"){
-        //                 image.push("${IMAGE_TAG}")
-        //                 image.push('latest')
-        //             }
-        //         }
-        //     }
-        // }
-        // stage("Deploy"){
-        //     steps{
-        //         script{
-        //             withKubeConfig([credentialsId: 'cc-kubeconfig',
-        //             serverUrl: 'https://212BB41E5C1BB0D8D6E9FF54CC7D5626.gr7.us-west-2.eks.amazonaws.com']) {
-        //                 sh 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 412032026508.dkr.ecr.us-west-2.amazonaws.com'
-        //                 sh 'kubectl apply -f  account-deployment-service.yaml'
-        //             }
-        //         }
-        //     }
-        // }
-        // stage('Remove old Image(s)'){//to ensure the agent doesnt run out of space by deleting image builds
-		// 	steps{
-        //         //ensures build doesn't fail if there isnt any previous images to delete
-        //         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-		// 		    sh 'docker rmi --force $(docker images -q -f dangling=true)'
-        //         }
-		// 	}
-		// }
     }
 }
