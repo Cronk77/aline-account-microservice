@@ -44,8 +44,7 @@ pipeline{
         stage("Build"){
             steps{
                 script{
-                    image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}",
-                    "--build-arg APP_PORT=${APP_PORT} .")
+                    image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}", "--build-arg APP_PORT=${APP_PORT} .")
                 }
             }
         }
@@ -61,11 +60,18 @@ pipeline{
                 }
             }
         }
-        stage('Remove old Image(s)'){//to ensure the agent doesnt run out of space
+        stage("Deploy"){
+            steps{
+                script{
+                    withKubeConfig([credentialsId: 'cc-kubectl-config', serverUrl: '']) {
+                        sh ('kubectl apply -f  account-deployment-service.yaml')
+                    }
+                }
+        }
+        stage('Remove old Image(s)'){//to ensure the agent doesnt run out of space by deleting image builds
 			steps{
                 //ensures build doesn't fail if there isnt any previous images to delete
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    //sh 'docker rmi --force $(docker images --filter reference="${IMAGE_NAME}" -q)'
 				    sh 'docker rmi --force $(docker images -q -f dangling=true)'
                 }
 			}
