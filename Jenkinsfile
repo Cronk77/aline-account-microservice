@@ -46,8 +46,9 @@ pipeline{
 			steps{
                 //ensures build doesn't fail if there isnt any previous images to delete
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'docker system prune'
-				    sh 'docker rmi --force $(docker images -q -f dangling=true)'
+                    sh 'docker ps -a'
+                    //sh 'docker system prune'
+				    //sh 'docker rmi --force $(docker images -q -f dangling=true)'
                 }
 			}
 		}
