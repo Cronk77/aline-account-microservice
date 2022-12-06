@@ -68,20 +68,16 @@ pipeline{
                 }
             }
         }
-        stage("test Kubectl"){
+        stage("Deploy"){
             steps{
-                sh 'kubectl'
+                script{
+                    withKubeConfig([credentialsId: 'cc-kubeconfig',
+                    serverUrl: 'https://212BB41E5C1BB0D8D6E9FF54CC7D5626.gr7.us-west-2.eks.amazonaws.com']) {
+                        sh 'kubectl apply -f  account-deployment-service.yaml'
+                    }
+                }
             }
         }
-        // stage("Deploy"){
-        //     steps{
-        //         script{
-        //             withKubeConfig([credentialsId: 'cc-kubectl-config', serverUrl: 'https://212BB41E5C1BB0D8D6E9FF54CC7D5626.gr7.us-west-2.eks.amazonaws.com']) {
-        //                 sh 'kubectl apply -f  account-deployment-service.yaml'
-        //             }
-        //         }
-        //     }
-        // }
         // stage('Remove old Image(s)'){//to ensure the agent doesnt run out of space by deleting image builds
 		// 	steps{
         //         //ensures build doesn't fail if there isnt any previous images to delete
