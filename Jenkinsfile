@@ -11,7 +11,7 @@ pipeline{
         AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
         AWS_JENKINS_CRED = "cc-aws-cred"
         SONARQUBE_PROJECT = "cc-account-microservice-project"
-        //aws_cred = credentials('cc-aws-cred')
+        aws_cred = credentials('cc-aws-cred')
         DEPLOYMENT_FILE = "account-deployment-service.yaml"
         SERVICE_NAME = "account"
     }
