@@ -79,8 +79,8 @@ pipeline{
                     //     sh 'kubectl apply -f  account-deployment-service.yaml'
                     // }
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'cc-kubeconfig', namespace: '', serverUrl: '') {
-                        sh 'kubectl get pods'
-                        //sh 'kubectl apply -f  account-deployment-service.yaml'
+                        sh 'kubectl delete deployment account-deployment'
+                        sh 'kubectl apply -f  account-deployment-service.yaml'
                     }
                 }
             }
