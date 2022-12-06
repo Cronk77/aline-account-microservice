@@ -14,7 +14,7 @@ FROM openjdk:8u181-jre-alpine as final
 # Uncomment out block to run individual containers without compose
 #########################################################################
 # ARG are set in the image building phase as arguments or from compose file
-# ARG APP_PORT
+ARG APP_PORT
 # ARG ENCRYPT_SECRET_KEY
 # ARG JWT_SECRET_KEY
 # ARG DB_USERNAME
@@ -23,7 +23,7 @@ FROM openjdk:8u181-jre-alpine as final
 # ARG DB_PORT
 # ARG DB_NAME
 # # Sets the enviroment variables from ARG's above
-# ENV APP_PORT=$APP_PORT
+ENV APP_PORT=$APP_PORT
 # ENV ENCRYPT_SECRET_KEY=$ENCRYPT_SECRET_KEY
 # ENV JWT_SECRET_KEY=$JWT_SECRET_KEY
 # ENV DB_USERNAME=$DB_USERNAME
