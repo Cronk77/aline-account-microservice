@@ -46,7 +46,7 @@ pipeline{
 			steps{
                 //ensures build doesn't fail if there isnt any previous images to delete
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'docker rmi -f $(docker images --filter reference="cc-account-microservice*" -q)'
+                    sh 'docker rmi -f $(docker images --filter reference="cc-account-microservice" -q)'
 				       sh 'docker rmi --force $(docker images -q -f dangling=true)'
                 }
 			}
@@ -79,7 +79,8 @@ pipeline{
                     //     sh 'kubectl apply -f  account-deployment-service.yaml'
                     // }
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'cc-kubeconfig', namespace: '', serverUrl: '') {
-                        sh 'kubectl apply -f  account-deployment-service.yaml'
+                        sh 'kubectl get pods'
+                        //sh 'kubectl apply -f  account-deployment-service.yaml'
                     }
                 }
             }
