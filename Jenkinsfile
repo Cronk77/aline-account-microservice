@@ -11,6 +11,7 @@ pipeline{
         AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
         AWS_JENKINS_CRED = "cc-aws-cred"
         SONARQUBE_PROJECT = "cc-account-microservice-project"
+        aws_cred = credentials('cc-aws-cred')
     }
     agent any    
     tools{
@@ -73,8 +74,6 @@ pipeline{
                 script{
                     withKubeConfig([credentialsId: 'cc-kubeconfig',
                     serverUrl: 'https://212BB41E5C1BB0D8D6E9FF54CC7D5626.gr7.us-west-2.eks.amazonaws.com']) {
-                        sh 'export AWS_ACCESS_KEY_ID=AKIAV73YFY6GGAYG7FZJ'
-                        sh 'export AWS_SECRET_ACCESS_KEY=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'
                         sh 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 412032026508.dkr.ecr.us-west-2.amazonaws.com'
                         sh 'kubectl apply -f  account-deployment-service.yaml'
                     }
