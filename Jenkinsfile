@@ -64,7 +64,7 @@ pipeline{
             steps{
                 script{
                     withKubeConfig([credentialsId: 'cc-kubectl-config', serverUrl: 'https://212BB41E5C1BB0D8D6E9FF54CC7D5626.gr7.us-west-2.eks.amazonaws.com']) {
-                        sh ('kubectl apply -f  account-deployment-service.yaml')
+                        sh 'kubectl apply -f  account-deployment-service.yaml'
                     }
                 }
             }
