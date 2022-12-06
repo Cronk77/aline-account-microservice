@@ -46,9 +46,8 @@ pipeline{
 			steps{
                 //ensures build doesn't fail if there isnt any previous images to delete
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'docker images'
-                    //sh 'docker system prune'
-				    //sh 'docker rmi --force $(docker images -q -f dangling=true)'
+                    sh 'docker rmi -f $(docker images --filter reference="cc-account-microservice*" -q)'
+				    sh 'docker rmi --force $(docker images -q -f dangling=true)'
                 }
 			}
 		}
