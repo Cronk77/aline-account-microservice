@@ -60,10 +60,11 @@ pipeline{
                 }
             }
         }
-        stage("test Kubectl")
+        stage("test Kubectl"){
             steps{
                 sh 'kubectl'
             }
+        }
         // stage("Deploy"){
         //     steps{
         //         script{
