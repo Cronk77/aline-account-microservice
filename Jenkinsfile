@@ -6,7 +6,8 @@ pipeline{
         //ensures logs also don't shows secret values
         APP_PORT = 80
         IMAGE_NAME = "cc-account-microservice" //acts as ecr repo name also
-        IMAGE_TAG = "0.1." + "${env.BUILD_ID}"
+        //IMAGE_TAG = "0.1." + "${env.BUILD_ID}"
+        IMAGE_TAG = "${GIT_COMMIT}"
         AWS_REGION = credentials('AWS_REGION')
         AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
         AWS_JENKINS_CRED = "cc-aws-cred"

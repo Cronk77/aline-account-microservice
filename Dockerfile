@@ -6,7 +6,7 @@ COPY . /aline-account-microservice
 
 # package up microservice
 WORKDIR /aline-account-microservice/
-RUN mvn -Dmaven.test.skip package
+RUN mvn clean -Dmaven.test.skip package
 
 # Second layer build(reduce size of image)
 FROM openjdk:8u181-jre-alpine as final
@@ -22,7 +22,7 @@ ARG APP_PORT
 # ARG DB_HOST
 # ARG DB_PORT
 # ARG DB_NAME
-# # Sets the enviroment variables from ARG's above
+# # # Sets the enviroment variables from ARG's above
 ENV APP_PORT=$APP_PORT
 # ENV ENCRYPT_SECRET_KEY=$ENCRYPT_SECRET_KEY
 # ENV JWT_SECRET_KEY=$JWT_SECRET_KEY
