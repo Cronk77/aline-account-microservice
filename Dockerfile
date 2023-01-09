@@ -35,6 +35,6 @@ ENV APP_PORT=$APP_PORT
 
 # Run Program
 WORKDIR /app/
-COPY --from=build /aline-account-microservice/account-microservice/target/account-microservice-0.1.0.jar account_jar
+COPY --from=build /aline-account-microservice/account-microservice/target/account-microservice-*.jar account_jar
 EXPOSE ${APP_PORT}
 CMD java -jar account_jar
