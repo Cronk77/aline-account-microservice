@@ -4,7 +4,7 @@ pipeline{
     environment{
         //variables are set as secret text credentials to maintain security and parameterization
         //ensures logs also don't shows secret values
-        APP_PORT = 8170
+        APP_PORT = 8176
         IMAGE_NAME = "cc-account-microservice" //acts as ecr repo name also
         //IMAGE_TAG = "0.1." + "${env.BUILD_ID}"
         IMAGE_TAG = "${GIT_COMMIT}"
